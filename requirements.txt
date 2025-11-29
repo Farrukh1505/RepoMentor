@@ -2,3 +2,4 @@ streamlit
 google-generativeai
 chromadb
 beautifulsoup4
+pysqlite3-binary
