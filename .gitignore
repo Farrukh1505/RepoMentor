@@ -1,0 +1,15 @@
+# Python / Virtual Env
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Environment Variables (Keep your keys secret!)
+.env
+
+# MacOS junk
+.DS_Store
+
+# Data (Optional: if you don't want to upload the sample repo)
+data/
+eval_db/
