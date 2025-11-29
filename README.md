@@ -1,4 +1,4 @@
-# 🧠 RepoMentor: Codebase RAG System
+# 🧠 **RepoMentor: Codebase RAG System**
 
 A robust Retrieval-Augmented Generation (RAG) system designed to ingest, analyze, and explain complex codebases using **Google Gemini** and **ChromaDB**.
 
@@ -8,45 +8,61 @@ A robust Retrieval-Augmented Generation (RAG) system designed to ingest, analyze
 * **Self-Correction:** Handles API Rate Limits (429 errors) with automatic retries.
 * **Evaluation Suite:** Includes an "LLM-as-a-Judge" script to grade its own accuracy.
 
----
+--------------------------------------------------------------------------------------
 
-## 🚀 Setup & Installation
 
-### 1. Clone the Repository
+
+## **🚀 Setup & Installation**
+
+**1. Clone the Repository**
 
 git clone [https://github.com/YOUR_USERNAME/RepoMentor.git](https://github.com/YOUR_USERNAME/RepoMentor.git)
 cd RepoMentor
 
 **2. Create a Virtual Environment**
+
 It is recommended to use a virtual environment to keep your dependencies clean.
 
-# macOS / Linux
+macOS / Linux: 
 python3 -m venv venv
 source venv/bin/activate
 
-# Windows
+Windows: 
 python -m venv venv
 venv\Scripts\activate
 
+
 **3. Install Dependencies**
 
+Since you are setting this up for others (or yourself later), you need to list the libraries used. Create a file named requirements.txt and paste this:
+
+google-generativeai
+chromadb
+beautifulsoup4
+python-dotenv
+
 pip install -r requirements.txt
-🔑 Configuration
+
+
+## **🔑 Configuration**
+
 You need a Google Gemini API Key to run this project.
 
-**Option 1: Environment Variable (Recommended)**
+Option 1: Environment Variable (Recommended)
 
-# macOS / Linux
+macOS / Linux: 
 export GEMINI_API_KEY="your_api_key_here"
 
-# Windows (Command Prompt)
+Windows:  (Command Prompt)
 set GEMINI_API_KEY=your_api_key_here
 
-**Option 2: .env file Create a file named .env in the root folder and add:**
+Option 2: .env file Create a file named .env in the root folder and add:
 
 GEMINI_API_KEY=your_api_key_here
 
-📊 **Running the Evaluation**
+
+
+## **📊 Running the Evaluation**
 
 We have a built-in testing suite that grades the system's accuracy on a scale of 1-5.
 Run the evaluation script:
@@ -60,10 +76,13 @@ A "Judge" model grades the answers.
 It generates a final report evaluation_report.json and prints the score.
 
 Passing Criteria:
+
 Score: > 3.5 / 5.0
+
 Latency: < 3 seconds per query
 
-📂 **Project Structure**
+
+## **📂 Project Structure**
 
 ingest.py: Scans files, chunks code using AST, and saves to ChromaDB.
 
@@ -76,18 +95,13 @@ config.py: Configuration settings (Chunk size, Model names).
 utils.py: Helper functions for safe file reading and AST parsing.
 
 
-### **Step 2: Create `requirements.txt`**
 
-Since you are setting this up for others (or yourself later), you need to list the libraries used. Create a file named `requirements.txt` and paste this:
+## **Push to GitHub**
 
-google-generativeai
-chromadb
-beautifulsoup4
-python-dotenv
-
-Step 3: Push these to GitHub
 Now that you have documentation, save it to the cloud:
 
 git add README.md requirements.txt
+
 git commit -m "Add documentation and requirements"
+
 git push
