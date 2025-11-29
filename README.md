@@ -1,127 +1,107 @@
-RepoMentor
+# 🧠 **RepoMentor: Codebase RAG System**
 
-RepoMentor is a cloud-ready RAG (Retrieval-Augmented Generation) engine for codebase analysis. It allows developers to upload repository archives (.zip) and perform architectural querying and logic explanation using Google's Gemini API.
+A robust Retrieval-Augmented Generation (RAG) system designed to ingest, analyze, and explain complex codebases using **Google Gemini** and **ChromaDB**.
 
-Unlike standard text search, RepoMentor utilizes AST (Abstract Syntax Tree) parsing for Python. This ensures vector embeddings represent complete logical units (functions and classes) rather than arbitrary text chunks, significantly improving retrieval precision.
+## ✨ Features
+* **Smart Ingestion:** Uses Python AST to understand functions, classes, and global variables.
+* **Robust Parsing:** Automatically handles binary files and encoding errors.
+* **Self-Correction:** Handles API Rate Limits (429 errors) with automatic retries.
+* **Evaluation Suite:** Includes an "LLM-as-a-Judge" script to grade its own accuracy.
 
-Core Features
-
-Zip Upload Interface: Analysis runs entirely via the web UI. Simply upload a zipped repository to start indexing.
-
-AST-Aware Indexing: Parses Python source code into semantic blocks (FunctionDef, ClassDef) to preserve logical context.
-
-Strict Source Grounding: All responses are cited with precise file paths and line number ranges (e.g., src/utils.py L45-L90).
-
-Gemini Powered: Leverages Google's Gemini 1.5 Flash for high-speed, cost-effective code reasoning.
-
-Dual Operation Modes:
-
-Global Query: Repository-wide architectural search.
-
-File Inspection: Deep-dive explanation of specific modules.
-
-Technical Architecture
-
-Inference Engine: Google Gemini 1.5 Flash
-
-Vector Store: ChromaDB (Ephemeral/Session-based)
-
-Embeddings: all-MiniLM-L6-v2 (HuggingFace)
-
-Orchestration: LangChain Community
-
-Interface: Streamlit
-
-Installation
-
-Prerequisites
-
-Python 3.10+
-
-Google Gemini API Key
-
-Setup
-
-Clone the repository
-
-git clone [https://github.com/yourusername/repomentor.git](https://github.com/yourusername/repomentor.git)
-cd repomentor
+--------------------------------------------------------------------------------------
 
 
-Install dependencies
+
+## **🚀 Setup & Installation**
+
+**1. Clone the Repository**
+
+git clone [https://github.com/YOUR_USERNAME/RepoMentor.git](https://github.com/YOUR_USERNAME/RepoMentor.git)
+cd RepoMentor
+
+**2. Create a Virtual Environment**
+
+It is recommended to use a virtual environment to keep your dependencies clean.
+
+macOS / Linux: 
+python3 -m venv venv
+source venv/bin/activate
+
+Windows: 
+python -m venv venv
+venv\Scripts\activate
+
+
+**3. Install Dependencies**
+
+Since you are setting this up for others (or yourself later), you need to list the libraries used. Create a file named requirements.txt and paste this:
+
+google-generativeai
+chromadb
+beautifulsoup4
+python-dotenv
 
 pip install -r requirements.txt
 
 
-Configure Environment (Optional)
-You can export your API key globally, or enter it securely in the UI sidebar each time.
+## **🔑 Configuration**
 
+You need a Google Gemini API Key to run this project.
+
+Option 1: Environment Variable (Recommended)
+
+macOS / Linux: 
 export GEMINI_API_KEY="your_api_key_here"
 
+Windows:  (Command Prompt)
+set GEMINI_API_KEY=your_api_key_here
 
-Usage
+Option 2: .env file Create a file named .env in the root folder and add:
 
-Start the application using the cloud-optimized entry point:
-
-streamlit run app.py
-
-
-Once running:
-
-Enter your Gemini API Key in the sidebar (if not set in env).
-
-Upload a .zip file of your target repository.
-
-Click Index Repository.
-
-Select "General Q&A" or "Explain File" to begin.
-
-Docker Deployment
-
-RepoMentor includes a Dockerfile for isolated execution, pre-configured for the cloud interface.
-
-# Build
-docker build -t repomentor .
-
-# Run (Access at http://localhost:8501)
-docker run -p 8501:8501 -e GEMINI_API_KEY="your_key" repomentor
+GEMINI_API_KEY=your_api_key_here
 
 
-Configuration
 
-Indexing and model parameters can be adjusted in config.py:
+## **📊 Running the Evaluation**
 
-Parameter
+We have a built-in testing suite that grades the system's accuracy on a scale of 1-5.
+Run the evaluation script:
 
-Default
+python evaluate.py
 
-Description
+What happens?
+The system ingests its own source code into a temporary vector database.
+It asks itself 10 technical questions (e.g., "How does ingestion work?").
+A "Judge" model grades the answers.
+It generates a final report evaluation_report.json and prints the score.
 
-ALLOWED_EXT
+Passing Criteria:
 
-.py, .js, .html...
+Score: > 3.5 / 5.0
 
-File extensions included in the index.
+Latency: < 3 seconds per query
 
-CHUNK_SIZE
 
-50
+## **📂 Project Structure**
 
-Line count for non-AST chunking (text/html).
+ingest.py: Scans files, chunks code using AST, and saves to ChromaDB.
 
-GEMINI_MODEL
+rag_core.py: Handles retrieval and answer generation using Gemini.
 
-gemini-1.5-flash
+evaluate.py: The test suite. Runs queries and grades them.
 
-LLM version. Switch to pro for complex tasks.
+config.py: Configuration settings (Chunk size, Model names).
 
-Project Structure
+utils.py: Helper functions for safe file reading and AST parsing.
 
-repomentor/
-├── app.py        # Main Application (UI + Logic)
-├── ingest.py           # Vectorization and indexing pipeline
-├── rag_core.py         # RAG logic and Gemini interaction
-├── utils.py            # AST parsing and file I/O utilities
-├── config.py           # Application configuration
-├── Dockerfile          # Container definition
-└── requirements.txt    # Python dependencies
+
+
+## **Push to GitHub**
+
+Now that you have documentation, save it to the cloud:
+
+git add README.md requirements.txt
+
+git commit -m "Add documentation and requirements"
+
+git push
