@@ -28,6 +28,7 @@ def ingest_repo(repo_path: Path, db_path: Path, api_key: str):
     """Ingests repo into a specific DB path using Gemini Embeddings."""
     
     # 1. Setup Clean DB
+    # Ensure DB folder is deleted to prevent collection existence error ---
     if db_path.exists():
         shutil.rmtree(db_path)
     db_path.mkdir(parents=True, exist_ok=True)
