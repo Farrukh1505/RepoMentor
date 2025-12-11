@@ -48,15 +48,26 @@ pip install -r requirements.txt
 
 You need a Google Gemini API Key to run this project.
 
-Option 1: Environment Variable (Recommended)
+### 📌 For the Streamlit Web App (`app.py`):
+**Primary Option (Recommended): Streamlit Secrets**
+1.  Create a folder `.streamlit` in your project root.
+2.  Inside, create a file named `secrets.toml`.
+3.  Add your API key using the standard name:
+    ```toml
+    GEMINI_API_KEY = "your_api_key_here"
+    ```
+    The web app will automatically load the key from here.
+
+### 📌 For the Evaluation Script (`evaluate.py`):
+**Option 1: Environment Variable**
 
 macOS / Linux: 
 export GEMINI_API_KEY="your_api_key_here"
 
-Windows:  (Command Prompt)
+Windows: (Command Prompt)
 set GEMINI_API_KEY=your_api_key_here
 
-Option 2: .env file Create a file named .env in the root folder and add:
+Option 2: .env file (For local testing) Create a file named .env in the root folder and add:
 
 GEMINI_API_KEY=your_api_key_here
 

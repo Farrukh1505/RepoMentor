@@ -16,8 +16,6 @@ from pathlib import Path
 from ingest import ingest_repo
 from rag_core import query_repo, explain_file
 
-MAX_FILE_SIZE_MB = 50
-
 st.set_page_config(page_title="RepoMentor", layout="wide")
 st.title("RepoMentor")
 
@@ -31,17 +29,27 @@ SESSION_DIR = BASE_TEMP / st.session_state.session_id
 REPO_DIR = SESSION_DIR / "repo"
 DB_DIR = SESSION_DIR / "db"
 
+GEMINI_KEY_NAME = "GEMINI_API_KEY"
+
+if "api_key" not in st.session_state:
+    if GEMINI_KEY_NAME in st.secrets:
+        st.session_state.api_key = st.secrets[GEMINI_KEY_NAME]
+    else:
+        # Set to empty string if not found in secrets (will trigger error in sidebar)
+        st.session_state.api_key = ""
+
 if "repo_ready" not in st.session_state:
     st.session_state.repo_ready = False
-if "api_key" not in st.session_state:
-    st.session_state.api_key = ""
 
 # 2. Sidebar Setup
 with st.sidebar:
     st.header("Setup")
-    key_input = st.text_input("API Key", type="password")
-    if key_input:
-        st.session_state.api_key = key_input
+    if not st.session_state.api_key:
+        st.error(f"API Key required.")
+        st.caption(f"Please configure '{GEMINI_KEY_NAME}' in your Streamlit secrets.")
+        st.stop()
+    else:
+        st.success("API Key loaded.")
     
     # --- NEW: Source Selection ---
     data_source = st.radio("Data Source", ["Upload Zip", "GitHub URL"])
@@ -83,7 +91,7 @@ with st.sidebar:
                         if result.returncode != 0:
                             raise Exception(f"Git clone failed: {result.stderr}")
 
-                with st.spinner("Indexing with Gemini..."):
+                with st.spinner("Analyzing..."):
                     ingest_repo(REPO_DIR, DB_DIR, st.session_state.api_key)
                     st.session_state.repo_ready = True
                 st.success("Ready!")
@@ -94,7 +102,7 @@ with st.sidebar:
     mode = st.radio("Mode", ["General Q&A", "Explain File"])
 
 if not st.session_state.repo_ready:
-    st.info("👈 Connect a repository to start.")
+    st.info("👈 Connect a repository or upload a .zip file to start.")
     st.stop()
 
 # 3. Main Interface

@@ -6,6 +6,7 @@ __pycache__/
 
 # Environment Variables (Keep your keys secret!)
 .env
+.streamlit/secrets.toml
 
 # MacOS junk
 .DS_Store

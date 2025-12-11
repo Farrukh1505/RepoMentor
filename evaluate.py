@@ -6,8 +6,6 @@ import tempfile
 import gc
 import google.generativeai as genai
 from pathlib import Path
-
-# Assumes these exist in your project structure
 from rag_core import query_repo
 from ingest import ingest_repo
 from config import GEMINI_MODEL, DEFAULT_REPO
